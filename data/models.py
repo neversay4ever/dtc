@@ -50,9 +50,9 @@ class Gene(models.Model):
     name = models.CharField('基因名称', max_length=20, unique=True)
     alias_name = models.CharField('别名', max_length=500, null=True, blank=True)
     negative_chain_or_not = models.BooleanField('是否负链', default=False)
-    chromosome = models.CharField('染色体', max_length=20)
-    start = models.PositiveIntegerField('起点位置')
-    end = models.PositiveIntegerField('终点位置')
+    chromosome = models.CharField('染色体', max_length=20, null=True, blank=True)
+    start = models.PositiveIntegerField('起点位置', null=True, blank=True)
+    end = models.PositiveIntegerField('终点位置', null=True, blank=True)
     description = models.TextField('基因介绍（英文）', null=True, blank=True)
     translation = models.TextField('基因介绍（中文）', null=True, blank=True)
     ref_version = models.CharField('参考基因组版本',
@@ -71,10 +71,10 @@ class Gene(models.Model):
 class Snp(models.Model):
     rs_id = models.CharField('dbsnp ID', max_length=20)
     genotype = models.CharField('基因型', max_length=2)
-    snp_name = models.CharField(unique=True, max_length=50, default='')
-    chromosome = models.CharField('染色体', max_length=50)
-    position = models.IntegerField('位置')
-    ref_or_not = models.BooleanField('是否参考基因型')
+    snp_name = models.CharField(unique=True, max_length=50)
+    chromosome = models.CharField('染色体', max_length=50, null=True, blank=True)
+    position = models.IntegerField('位置', null=True, blank=True)
+    ref_or_not = models.BooleanField('是否参考基因型', null=True, blank=True)
     han_population_freq = models.FloatField('汉族人中的频率', null=True, blank=True)
     world_population_freq = models.FloatField('人群中的频率', null=True, blank=True)
     gene = models.ForeignKey('Gene', to_field='name', verbose_name='归属基因名',
@@ -83,7 +83,7 @@ class Snp(models.Model):
         'dbsnp 版本号', null=True, blank=True, default=141)
 
     def __str__(self):
-        return self.snp
+        return self.snp_name
 
     class Meta:
         verbose_name = 'SNP突变'
