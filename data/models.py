@@ -1,5 +1,5 @@
 from django.db import models
-
+import uuid
 
 # Create your models here.
 
@@ -49,7 +49,7 @@ DISEASE_CATEGORY = (
 class Gene(models.Model):
     name = models.CharField('基因名称', max_length=20, unique=True)
     alias_name = models.CharField('别名', max_length=500, null=True, blank=True)
-    negative_chain_or_not = models.BooleanField('是否负链', default=False)
+    chain = models.CharField('正负链', max_length=1,  default="+")
     chromosome = models.CharField('染色体', max_length=20, null=True, blank=True)
     start = models.PositiveIntegerField('起点位置', null=True, blank=True)
     end = models.PositiveIntegerField('终点位置', null=True, blank=True)
@@ -71,19 +71,21 @@ class Gene(models.Model):
 class Snp(models.Model):
     rs_id = models.CharField('dbsnp ID', max_length=20)
     genotype = models.CharField('基因型', max_length=2)
-    snp_name = models.CharField(unique=True, max_length=50)
+    snp_name = models.CharField(
+        '合并名称', unique=True, max_length=50, default=uuid.uuid1)
     chromosome = models.CharField('染色体', max_length=50, null=True, blank=True)
     position = models.IntegerField('位置', null=True, blank=True)
-    ref_or_not = models.BooleanField('是否参考基因型', null=True, blank=True)
+    ref_or_not = models.BooleanField(
+        '是否参考基因型', null=True, blank=True, default=True)
     han_population_freq = models.FloatField('汉族人中的频率', null=True, blank=True)
     world_population_freq = models.FloatField('人群中的频率', null=True, blank=True)
     gene = models.ForeignKey('Gene', to_field='name', verbose_name='归属基因名',
                              on_delete=models.CASCADE, null=True, blank=True)
     dbsnp_version = models.PositiveSmallIntegerField(
-        'dbsnp 版本号', null=True, blank=True, default=141)
+        'dbsnp 版本号', null=True, blank=True, default=138)
 
     def __str__(self):
-        return self.snp_name
+        return str(self.snp_name)
 
     class Meta:
         verbose_name = 'SNP突变'

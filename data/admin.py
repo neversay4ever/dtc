@@ -19,22 +19,22 @@ class CustomModelAdmin(DjangoQLSearchMixin, ImportExportModelAdmin):
 
 @admin.register(Gene)
 class GeneAdmin(CustomModelAdmin):
-    pass
+    list_filter = ['chain', 'chromosome']
 
 
 @admin.register(Snp)
 class SnpAdmin(CustomModelAdmin):
-    pass
+    list_filter = ['ref_or_not', 'genotype', 'chromosome']
 
 
 @admin.register(Trait)
 class TraitAdmin(CustomModelAdmin):
-    pass
+    list_filter = ['category', 'age_choice', 'gender_choice']
 
 
 @admin.register(Disease)
 class DiseaseAdmin(CustomModelAdmin):
-    pass
+    list_filter = ['category', 'age_choice', 'gender_choice']
 
 
 @admin.register(TraitSnp)
@@ -49,4 +49,4 @@ class DiseaseSnpAdmin(CustomModelAdmin):
 
 @admin.register(Paper)
 class PaperAdmin(CustomModelAdmin):
-    pass
+    list_filter = ['journal', 'year']
